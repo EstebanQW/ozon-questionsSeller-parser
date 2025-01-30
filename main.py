@@ -6,18 +6,12 @@ from openpyxl import load_workbook
 from datetime import datetime
 
 
-#
-#
-#
-
-company_id = "123456"  # id компании, можно посмотреть на странице компании (например https://www.ozon.ru/seller/ooo-mebelnaya-fabrika-volzhanka-1234/products/?miniapp=seller_1234 - id компании 1234)
-date_to = "2025-01-11"  # будет отправлять запросы пока не встретит указанную дату (лучше указывать нужную дату +1)
-cookie = "cookie"  # Актуальные куки
-cases = 500000  # Количество вопросов, которое нужно получить. 1 кейс = 10 вопросов
-
-#
-#
-#
+#==========================================================#
+COMPANY_ID = "123456"  # id компании, можно посмотреть на странице компании (например https://www.ozon.ru/seller/ooo-mebelnaya-fabrika-volzhanka-1234/products/?miniapp=seller_1234 - id компании 1234)
+DATE_TO = "2025-01-11"  # будет отправлять запросы пока не встретит указанную дату (лучше указывать нужную дату +1)
+COOKIE = "cookie"  # Актуальные куки
+CASES = 500000  # Количество вопросов, которое нужно получить. 1 кейс = 10 вопросов
+#==========================================================#
 
 
 # Функция для получения вопросов
@@ -33,7 +27,7 @@ def get_questions(value_cases: int, cookie: str):
         "Content-Type": "application/json",
         "x-o3-app-name": "seller-ui",
         "x-o3-language": "ru",
-        "x-o3-company-id": company_id,
+        "x-o3-company-id": COMPANY_ID,
         "x-o3-page-type": "questions",
         "X-KL-Ajax-Request": "Ajax_Request",
         "Sec-Fetch-Dest": "empty",
@@ -50,7 +44,7 @@ def get_questions(value_cases: int, cookie: str):
     # last_timestamp = "1728695750220301"
 
     data = {
-        "sc_company_id": company_id,
+        "sc_company_id": COMPANY_ID,
         "with_brands": False,
         "with_counters": False,
         "company_type": "seller",
@@ -75,7 +69,7 @@ def get_questions(value_cases: int, cookie: str):
                 # Проверка на дату
                 for item in result:
                     data_at = item["published_at"].split("T")[0]
-                    if item["published_at"].split("T")[0] == date_to:
+                    if item["published_at"].split("T")[0] == DATE_TO:
                         print("Дата найдена, завершение выполнения.")
                         return  # Выход, если нужная дата найдена
                 print(data_at)
@@ -188,4 +182,4 @@ def save_xlsx(data):
 
 
 if __name__ == "__main__":
-    get_questions(cases, cookie)
+    get_questions(CASES, COOKIE)
